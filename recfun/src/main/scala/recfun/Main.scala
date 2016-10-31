@@ -22,12 +22,14 @@ object Main {
     * Exercise 2
     */
   def balance(chars: List[Char]): Boolean = {
-    def countBalance(chars: List[Char], balance: Int = 0): Boolean = chars match {
-      case '(' :: tail => countBalance(tail, balance + 1)
-      case ')' :: tail if (balance == 0) => false
-      case ')' :: tail => countBalance(tail, balance - 1)
-      case e :: tail => countBalance(tail, balance)
-      case nil => balance == 0
+    def countBalance(chars: List[Char], balance: Int = 0): Boolean = {
+      if (balance < 0) false
+      else chars match {
+        case '(' :: tail => countBalance(tail, balance + 1)
+        case ')' :: tail => countBalance(tail, balance - 1)
+        case c :: tail => countBalance(tail, balance)
+        case nil => balance == 0
+      }
     }
     countBalance(chars)
   }
@@ -36,15 +38,15 @@ object Main {
     * Exercise 3
     */
   def countChange(money: Int, coins: List[Int]): Int = {
-    def countChange(money: Int,  coins: List[Int], count: Int): Int = {
+    def countChange(money: Int, coins: List[Int], count: Int): Int = {
       (money, coins) match {
         case (_, _) if money < 0 => count
         case (0, Nil) => count + 1
         case (_, Nil) => count
-        case _ => countChange(money, coins.tail, count) + countChange(money-coins.head, coins, count)
+        case _ => countChange(money, coins.tail, count) + countChange(money - coins.head, coins, count)
       }
     }
-    countChange(money,coins,0)
+    countChange(money, coins, 0)
 
   }
 
